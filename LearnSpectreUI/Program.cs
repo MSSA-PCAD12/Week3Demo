@@ -1,14 +1,16 @@
 ﻿using Spectre.Console;
+using System.Text;
 
 namespace LearnSpectreUI
 {
     internal class Program
     {
+       static string rock = "✊";
+        static string scissor = "✌";
+        static string paper = "✋";
         static void Main(string[] args)
         {
-            //char rock = '✊';
-            //char scissor = '✌';
-            //char paper = '✋';
+            Console.OutputEncoding = Encoding.UTF8;
             do
             {
                 var myHand = AnsiConsole.Prompt(
@@ -16,31 +18,32 @@ namespace LearnSpectreUI
                  .Title("Pick your hand!")
                  .PageSize(10)
                  .AddChoices(new[] {
-                    "Rock","Paper","Scissor"
+                    rock,paper,scissor
                  }));
 
                 string computerHand = GetComputerHand();
 
                string whoWins = CompareHand(myHand, computerHand);
                 // Echo the hand back to the terminal
-                AnsiConsole.WriteLine($"You chose: {myHand} ");
-                AnsiConsole.WriteLine($"Computer chose: {computerHand} ");
-                AnsiConsole.WriteLine($"{whoWins}");
+                AnsiConsole.WriteLine($"You hand: {myHand} vs {computerHand} ");
+                
+                AnsiConsole.MarkupInterpolated($"[bold yellow on blue]{whoWins}[/]\n");
+                //AnsiConsole.WriteLine($"{whoWins}");
             } while (AnsiConsole.Confirm("Pick Again?"));
         }
 
         private static string CompareHand(string myHand, string computerHand)
         {
             if (myHand == computerHand) { return "Its a tie."; }
-            if (myHand == "Rock" && computerHand == "Scissor") { return "You win"; }
-            if (myHand == "Scissor" && computerHand == "Paper") { return "You win"; }
-            if (myHand == "Paper" && computerHand == "Rock") { return "You win"; }
+            if (myHand == rock && computerHand == scissor) { return "You win"; }
+            if (myHand == scissor && computerHand == paper) { return "You win"; }
+            if (myHand == paper && computerHand == rock) { return "You win"; }
             return "Computer wins";
         }
 
         private static string GetComputerHand()
         {
-            string[] hands = { "Rock", "Paper", "Scissor" };
+            string[] hands = { rock, paper, scissor };
             Random rnd = new Random();
             return hands[rnd.Next(hands.Length)];
         }
