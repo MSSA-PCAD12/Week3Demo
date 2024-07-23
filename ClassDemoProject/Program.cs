@@ -9,7 +9,7 @@ namespace ConsoleApp3
     {
         static void Main(string[] args)
         {
-            Car myCar = new Car("Victor",FuelType.Hybrid,4);
+            Car myCar = new Car("Victor",FuelType.Gas,4);
             Car bobCar = new Car("Bob", FuelType.Diesel, 3);
             myCar.Drive(15085);
             bobCar.Drive(3234);
