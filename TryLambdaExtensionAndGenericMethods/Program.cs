@@ -11,10 +11,31 @@ namespace TryLambda
             var projectStringLength = strarr.Select(s => s.Length);
             var projectInitialChar = strarr.Select(s => s[0]);
             var projectLastChar = strarr.Select(s => s[^1]);
-            //projectStringLength.Print();
+            var projectFirstTwoChar = strarr.Select(s => s[..2]);
+
+
+            // LINQ - Extension Methods (select,where,zip,chunk.....)
+            // Generic Methods, Lambda - use shorthand (s)=>y  given s return y
+            // using Lambda to supply our logic to Linq extension method
+            //the final form of select
+            // use new { [prop1]=[projection1] ,[prop2]=[projection2],...... } to define an anonymous class
+
+            var whatIsIt = strarr.Select(s=> new 
+            {
+                StringLength= s.Length,
+                InitialChar= s[0],
+                LastChar= s[^1],
+                FirstTwoChar= s[..2]
+            });
+            foreach (var item in whatIsIt)
+            {
+                Console.WriteLine($"{item.FirstTwoChar}-{item.LastChar}-{item.StringLength}-{item.InitialChar}" );
+            }
+
+            projectStringLength.Print("Project string length");
             projectInitialChar.Print("Project Initial letter");
             projectLastChar.Print("Project Last letter");
-
+            projectFirstTwoChar.Print("Project First 2 letter");
             //var result = arr.Where(i => i>5 );
             var result = arr.Where(i => i % 2 == 1).Sum();
 
@@ -48,6 +69,12 @@ namespace TryLambda
                 }
                 Console.WriteLine("");
             }
+
+            var sumPerGroup = arr.GroupBy(i => $"Group {(i % 3)}").Select(
+              (group, idx) => $"{group.Key} has sum of {group.Sum()}"
+              );
+
+            sumPerGroup.Print("Group Sum");
             //filtering - where
             //aggregate - sum, min,max,avg,stdev, - aggregate
             //grouping - divide into groups - groupby
@@ -67,12 +94,23 @@ namespace TryLambda
     }
 
     static class Extensions {
-        public static void Print(this IEnumerable<char> arr,string title) {
+        // non generic version, only works with IEnumerable<char>
+        //public static void Print(this IEnumerable<char> arr,string title) {
+        //    Console.WriteLine($"------------{title}------------");
+        //    foreach (var item in arr)
+        //    {
+        //        Console.WriteLine(item);
+        //    }     
+        //}
+
+        // generic version
+        public static void Print<T>(this IEnumerable<T> arr, string title)
+        {
             Console.WriteLine($"------------{title}------------");
             foreach (var item in arr)
             {
                 Console.WriteLine(item);
-            }     
+            }
         }
     }
 }
